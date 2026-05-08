@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCELE-OG Tembokratapan</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body id="page-site-index" class="pagelayout-frontpage notloggedin">
+    <nav class="top-navbar" aria-label="Main">
+      <div class="top-navbar-inner">
+        <a href="#" class="navbar-brand">SCELE</a>
+        <ul class="navbar-menu">
+          <li><a href="#">Academic Links</a></li>
+          <li><a href="#">Panduan Mahasiswa</a></li>
+          <li><a href="#">Dukungan Kuliah</a></li>
+          <li><a href="#">Bantuan SCeLE</a></li>
+        </ul>
+        <div class="top-actions">
+          <input class="search-input" placeholder="Search" />
+          <span class="usermenu" id="userStatus">You are not logged in.</span>
+          <button id="btnLogout" class="btn btn-outline-secondary">Log out</button>
+        </div>
+      </div>
+    </nav>
+
+    <div id="page" class="page-wrap">
+      <header id="page-header">
+        <h1>SCELE-OG Tembokratapan Learning Environment</h1>
+        <nav id="page-navbar" aria-label="Navigation bar">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item">Course</li>
+            <li class="breadcrumb-item">TK2 Web Exploit Engineering</li>
+          </ol>
+        </nav>
+      </header>
+
+      <div id="page-content">
+        <main id="region-main-box" class="region-main">
+          <section id="region-main" class="region-main-content" aria-label="Content">
+            <div role="main">
+              <a class="skip-block" href="#workspace">Skip pengumuman akademis</a>
+              <div id="site-news-forum" class="card">
+                <div class="card-body">
+                  <h2>Pengumuman Akademis</h2>
+                  <article class="forum-post-container">
+                    <div class="forumpost">
+                      <header class="post-header">
+                        <h3>Welcome to SCELE-OG</h3>
+                        <div class="post-meta">by Asisten Dosen - Wednesday, 6 May 2026, 8:00 PM</div>
+                      </header>
+                      <div class="posting">Gunakan forum diskusi untuk pembahasan assignment, feedback, dan troubleshooting submission.</div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+              <article id="authCard" class="card">
+                <div class="card-body">
+                  <h3>Log in</h3>
+                  <div class="form-grid">
+                    <label>
+                      <span>Username</span>
+                      <input id="username" value="mahasiswa" />
+                    </label>
+                    <label>
+                      <span>Password</span>
+                      <input id="password" type="password" value="tembokratapan123" />
+                    </label>
+                    <button id="btnLogin" class="btn btn-primary">Log in</button>
+                  </div>
+                </div>
+              </article>
+
+              <section id="workspace" class="hidden">
+                <article class="card">
+                  <div class="card-body">
+                    <h3>Forum Diskusi Mata Kuliah</h3>
+                    <input id="discussionTitle" placeholder="Judul diskusi" value="Submission feedback" />
+                    <textarea id="discussionBody" rows="7" placeholder="Tuliskan diskusi kamu di sini"></textarea>
+                    <div class="row-actions">
+                      <button id="btnCreateDiscussion" class="btn btn-primary">Post Discussion</button>
+                      <button id="btnReloadDiscussion" class="btn btn-secondary">Reload Discussions</button>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <div class="card-body">
+                    <h3>Topik Diskusi</h3>
+                    <div id="discussionList" class="discussion-list"></div>
+                  </div>
+                </article>
+              </section>
+            </div>
+          </section>
+        </main>
+
+        <aside class="blockcolumn" data-region="blocks-column">
+          <section class="block card">
+            <div class="card-body">
+              <h4 class="block-title">Activities</h4>
+              <ul class="block-list">
+                <li>Forums</li>
+                <li>Resources</li>
+                <li>Assignments</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="block card">
+            <div class="card-body">
+              <h4 class="block-title">Navigation</h4>
+              <ul class="block-list">
+                <li>Dashboard</li>
+                <li>Site home</li>
+                <li>My courses</li>
+                <li>TK2 Web</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="block card">
+            <div class="card-body">
+              <h4 class="block-title">Akses Cepat</h4>
+              <ul class="block-list">
+                <li>Kalender Akademik</li>
+                <li>Panduan Tugas Akhir</li>
+                <li>Kontak Admin</li>
+              </ul>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

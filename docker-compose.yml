@@ -1,0 +1,34 @@
+services:
+  lms:
+    build:
+      context: ./lms
+    container_name: scele-og-lms
+    environment:
+      PORT: 3000
+      RENDERER_URL: http://renderer:4000
+      BOT_SHARED_SECRET: tembokratapan-bot-shared
+      GRADE_TOKEN: GRADE-TOKEN-TEMBOKRATAPAN-9f7a2c
+    ports:
+      - "3000:3000"
+    depends_on:
+      - renderer
+
+  renderer:
+    build:
+      context: ./renderer
+    container_name: scele-og-renderer
+    environment:
+      PORT: 4000
+    expose:
+      - "4000"
+
+  bot:
+    build:
+      context: ./bot
+    container_name: scele-og-bot
+    environment:
+      LMS_URL: http://lms:3000
+      BOT_SHARED_SECRET: tembokratapan-bot-shared
+      BOT_REVIEW_INTERVAL_MS: 7000
+    depends_on:
+      - lms
