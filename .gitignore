@@ -3,3 +3,6 @@ node_modules/
 writeup.md
 WRITEUP*
 lms/flag.txt
+
+.codex
+README.md
