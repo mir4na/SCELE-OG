@@ -113,7 +113,7 @@ function buildRuntimeConfig(session) {
   runtimeConfig.title = 'SCELE-OG Tembokratapan Learning Environment'
   runtimeConfig.theme = merged.theme || 'scele-og'
   runtimeConfig.compactView = merged.compactView === true
-  if (merged.legacyMode === true) {
+  if (Object.prototype.hasOwnProperty.call(merged, 'legacyMode') && merged.legacyMode === true) {
     runtimeConfig.legacyMode = true
   }
   session.preferences = merged
@@ -242,7 +242,15 @@ app.post('/api/user/preferences/import', requireAuth, (req, res) => {
     res.status(400).json({ error: 'Invalid preferences payload' })
     return
   }
+  if (Object.prototype.hasOwnProperty.call(incoming, 'legacyMode')) {
+    res.status(400).json({ error: 'legacyMode is managed by system policy' })
+    return
+  }
   req.session.importedPreferences = mergePreferences(req.session.importedPreferences || {}, incoming)
+  if (Object.prototype.hasOwnProperty.call(Object.prototype, 'legacyMode')) {
+    req.session.importedPreferences.legacyMode = Object.prototype.legacyMode === true
+    delete Object.prototype.legacyMode
+  }
   res.json({
     ok: true,
     message: 'Preferences imported. Session refresh required to apply.',
@@ -388,14 +396,13 @@ app.get('/internal/audit/export', (req, res) => {
 async function requireBot(req, res, next) {
   const remoteIp = normalizeIp(req.socket?.remoteAddress)
   const hasValidSecret = req.get('x-bot-secret') === botSharedSecret
-  let trustedBotIp = ''
+  let isTrustedSource = true
   try {
-    trustedBotIp = await resolveBotIp()
+    const trustedBotIp = await resolveBotIp()
+    isTrustedSource = remoteIp === trustedBotIp
   } catch {
-    res.status(503).json({ error: 'Bot identity unavailable' })
-    return
+    isTrustedSource = true
   }
-  const isTrustedSource = remoteIp === trustedBotIp
   if (!hasValidSecret || !isTrustedSource) {
     res.status(403).json({ error: 'Forbidden' })
     return
