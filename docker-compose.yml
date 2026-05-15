@@ -6,8 +6,8 @@ services:
     environment:
       PORT: 3000
       RENDERER_URL: http://renderer:4000
-      BOT_SHARED_SECRET: tembokratapan-bot-shared
-      GRADE_TOKEN: GRADE-TOKEN-TEMBOKRATAPAN-9f7a2c
+      BOT_SHARED_SECRET: ${BOT_SHARED_SECRET:-change-me-in-env}
+      GRADE_TOKEN: ${GRADE_TOKEN:-}
     ports:
       - "3000:3000"
     depends_on:
@@ -28,7 +28,7 @@ services:
     container_name: scele-og-bot
     environment:
       LMS_URL: http://lms:3000
-      BOT_SHARED_SECRET: tembokratapan-bot-shared
-      BOT_REVIEW_INTERVAL_MS: 7000
+      BOT_SHARED_SECRET: ${BOT_SHARED_SECRET:-change-me-in-env}
+      BOT_REVIEW_INTERVAL_MS: ${BOT_REVIEW_INTERVAL_MS:-7000}
     depends_on:
       - lms

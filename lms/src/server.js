@@ -13,14 +13,14 @@ const app = express()
 const port = Number(process.env.PORT || 3000)
 const rendererUrl = process.env.RENDERER_URL || 'http://localhost:4000'
 const botSharedSecret = process.env.BOT_SHARED_SECRET || 'bot-shared'
-const gradeToken = process.env.GRADE_TOKEN || 'GRADE-TOKEN-LOCAL'
+const gradeToken = process.env.GRADE_TOKEN || `GRADE-TOKEN-${createId(10)}`
 const flagPath = path.join(__dirname, '..', 'flag.txt')
 const flag = fs.existsSync(flagPath) ? fs.readFileSync(flagPath, 'utf8').trim() : 'CSCE604258{local_testing_flag}'
 
 const users = {
   mahasiswa: { username: 'mahasiswa', password: 'tembokratapan123', role: 'student', displayName: 'Mahasiswa Tembokratapan' },
   asdos: { username: 'asdos', password: 'legacycompat', role: 'staff', displayName: 'Asisten Dosen' },
-  graderbot: { username: 'graderbot', password: 'bot-internal-pass', role: 'admin', displayName: 'Grading Bot' }
+  graderbot: { username: 'graderbot', password: 'bot-internal-pass', role: 'admin', displayName: 'Grading Bot', internalOnly: true }
 }
 
 const sessions = new Map()
@@ -184,7 +184,7 @@ app.post('/api/auth/login', (req, res) => {
     return
   }
   const user = users[username]
-  if (!user || user.password !== password) {
+  if (!user || user.internalOnly === true || user.password !== password) {
     res.status(401).json({ error: 'Invalid credentials' })
     return
   }
