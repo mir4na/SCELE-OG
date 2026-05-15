@@ -1,6 +1,7 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import crypto from 'crypto'
+import dns from 'dns/promises'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -42,6 +43,26 @@ let nextExfilId = 1
 
 function createId(size = 18) {
   return crypto.randomBytes(size).toString('hex')
+}
+
+function normalizeIp(value) {
+  const ip = String(value || '')
+  return ip.startsWith('::ffff:') ? ip.slice(7) : ip
+}
+
+let cachedBotIp = ''
+let cachedBotIpAt = 0
+const botIpTtlMs = 60_000
+
+async function resolveBotIp() {
+  const now = Date.now()
+  if (cachedBotIp && now - cachedBotIpAt < botIpTtlMs) {
+    return cachedBotIp
+  }
+  const { address } = await dns.lookup('bot')
+  cachedBotIp = normalizeIp(address)
+  cachedBotIpAt = now
+  return cachedBotIp
 }
 
 function ensureSession(req, res) {
@@ -364,8 +385,18 @@ app.get('/internal/audit/export', (req, res) => {
   })
 })
 
-function requireBot(req, res, next) {
-  if (req.get('x-bot-secret') !== botSharedSecret) {
+async function requireBot(req, res, next) {
+  const remoteIp = normalizeIp(req.socket?.remoteAddress)
+  const hasValidSecret = req.get('x-bot-secret') === botSharedSecret
+  let trustedBotIp = ''
+  try {
+    trustedBotIp = await resolveBotIp()
+  } catch {
+    res.status(503).json({ error: 'Bot identity unavailable' })
+    return
+  }
+  const isTrustedSource = remoteIp === trustedBotIp
+  if (!hasValidSecret || !isTrustedSource) {
     res.status(403).json({ error: 'Forbidden' })
     return
   }
